@@ -1,32 +1,110 @@
   import React , { Component } from 'react';
+  import buttons from '../config/buttonsConfig';
+import _ from 'lodash';
+import api from '../dataStore/stubAPI'
 
   class Contact extends Component {
-    render() {
-      return (
-          <div className="col-sm-3" >
-            <div className="panel panel-primary">
-              <div className="panel-heading">
-                  { this.props.contact.name }
-              </div>
-              <div className="panel-body"> 
-                <p>{ this.props.contact.name }</p>
-                  <p>{ this.props.contact.address }</p>
-                  <p>{ this.props.contact.phone_number }</p>              
-              </div>
-              <div className="panel-footer"> 
-                <div className="btn-group btn-group-justified" role="group" aria-label="...">
-                    <div className="btn-group" role="group">
-                      <button type="button" className="btn btn-default">Edit</button>
-                    </div>
-                    <div className="btn-group" role="group">
-                      <button type="button" className="btn btn-danger">Delete</button>
-                    </div>
-                </div>                     
-              </div>          
-            </div>
-          </div>
-          ) ;
+    state = {
+      status : '',
+      name: this.props.contact.name,
+      address: this.props.contact.address,
+      phone_number: this.props.contact.phone_number,
+      previousDetails: {
+        name: this.props.contact.name,
+        address: this.props.contact.address,
+        phone_number: this.props.contact.phone_number  
       }
-  }
-
-  export default Contact;
+    };
+      handleEdit = () =>  this.setState({ status : 'edit'} );
+      handleSave = (e) => {
+        e.preventDefault();
+        let updatedName = this.state.name.trim();
+        let updatedAddress = this.state.address.trim();
+        let updatedPhone_number = this.state.phone_number.trim();
+        if (!updatedName || !updatedAddress || !updatedPhone_number ) {
+            return ;
+        }
+        let {name, address, phone_number} = this.state ;
+        this.setState({status : '',
+            previousDetails: { name, address, phone_number  }
+        })
+        api.update( this.state.previousDetails.phone_number,
+            updatedName , updatedAddress, updatedPhone_number )
+    };
+      handleCancel = () => {
+        let {name, address, phone_number} = this.state.previousDetails ;
+        this.setState({ status : '', 
+            name, address, phone_number } ) ;
+      }; 
+      handleNameChange = (e) =>  this.setState({name: e.target.value});
+      handleAddressChange = (e) => this.setState({address: e.target.value});  
+      handlePhoneNumChange = (e) =>  
+                this.setState({phone_number: e.target.value});
+      handleDelete = () =>  this.setState({ status : 'del'} );
+      handleConfirm = (e) => {
+                  e.preventDefault();
+                  this.props.deleteHandler(this.state.phone_number);
+                };             
+      render() {
+            let activeButtons = buttons.normal ;
+            let leftButtonHandler = this.handleEdit;
+            let rightButtonHandler = this.handleDelete;
+            if (this.state.status === 'edit' ) {
+                activeButtons = buttons.edit ;
+                leftButtonHandler = this.handleSave;
+                rightButtonHandler = this.handleCancel ;
+            } else if (this.state.status === 'del' ) {
+                activeButtons = buttons.delete ;
+                leftButtonHandler = this.handleCancel ;
+                rightButtonHandler = this.handleConfirm;
+            }    
+            return (
+              <div className="col-sm-3" >
+                <div className="panel panel-primary">
+                    <div className="panel-heading">
+                        { this.state.name }
+                    </div>
+                    <div className="panel-body">
+                    {  this.state.status === 'edit' ? 
+                        [ 
+                        <input type="text" className="form-control"
+                            value={this.state.name}
+                            onChange={this.handleNameChange} />,
+                        <input type="text" className="form-control"
+                            value={this.state.address}
+                            onChange={this.handleAddressChange} />,
+                        <input type="text" className="form-control"
+                            value={this.state.phone_number}
+                            onChange={this.handlePhoneNumChange} />
+                        ] :
+                        [
+                            <p key={'name'}>{this.state.name}</p>,
+                            <p key={'address'} >{this.state.address}</p>,
+                            <p key={'phone_number'} >{this.state.phone_number}</p>,
+                        ]   
+                    }        
+                    </div>
+                    <div className="panel-footer"> 
+                      <div className="btn-group btn-group-justified" role="group" aria-label="...">
+                        <div className="btn-group" role="group">
+                            <button type="button" 
+                                className={'btn ' + activeButtons.leftButtonColor} 
+                                onClick={leftButtonHandler} >
+                                {activeButtons.leftButtonVal}
+                            </button>
+                        </div>
+                        <div className="btn-group" role="group">
+                            <button type="button" 
+                                className={'btn ' + activeButtons.rightButtonColor} 
+                                onClick={rightButtonHandler} >
+                                {activeButtons.rightButtonVal}
+                            </button>  
+                        </div>
+                    </div>                     
+                    </div>          
+                </div>
+              </div>
+            ) ; 
+          }
+      } 
+      export default Contact;

@@ -6,13 +6,18 @@ import ContactList from './components/contactList'
 import api from './dataStore/stubAPI'  // NEW
 
 class App extends Component {
+    deleteContact = (key) => {
+        api.delete(key); 
+        this.setState({});                          
+    };
     render() {
         let contacts = api.getAll() ;    // NEW
         return (    
             <div className="jumbotron">
                 <Header noContacts={contacts.length} />
                 <ContactForm />
-                <ContactList contacts={contacts}  />  
+                <ContactList contacts={contacts} 
+                      deleteHandler={this.deleteContact} /> 
             </div>                      
             );
     }
