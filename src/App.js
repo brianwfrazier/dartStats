@@ -6,6 +6,10 @@ import ContactList from './components/contactList'
 import api from './dataStore/stubAPI'  // NEW
 
 class App extends Component {
+    addContact = (n, a, p) => {
+         api.add(n,a,p) ;
+         this.setState({});
+    };
     deleteContact = (key) => {
         api.delete(key); 
         this.setState({});                          
@@ -15,7 +19,7 @@ class App extends Component {
         return (    
             <div className="jumbotron">
                 <Header noContacts={contacts.length} />
-                <ContactForm />
+                <ContactForm  addHandler={this.addContact} />
                 <ContactList contacts={contacts} 
                       deleteHandler={this.deleteContact} /> 
             </div>                      
