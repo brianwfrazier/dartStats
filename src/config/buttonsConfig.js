@@ -8,14 +8,14 @@
      delete : { 
         leftButtonVal : 'Undo' ,
         rightButtonVal : 'Confirm' ,
-        leftButtonColor : 'btn-success',
-        rightButtonColor : 'btn-danger'
+        leftButtonColor : 'btn-danger',
+        rightButtonColor : 'btn-success'
      },
      edit : {
         leftButtonVal : 'Save' ,
         rightButtonVal : 'Cancel' ,
-        leftButtonColor : 'btn-danger',
-        rightButtonColor : 'btn-success'
+        leftButtonColor : 'btn-success',
+        rightButtonColor : 'btn-danger'
      }
   }
   export default buttons;

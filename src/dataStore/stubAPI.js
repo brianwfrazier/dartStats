@@ -4,29 +4,39 @@
       constructor() {
           this.contacts = [
               {
-              'name': 'Contact 1',
-              'address': '123 Test St',
-              'phone_number': '132-3212'
+              'dart_player': 'Michael',
+              'address': '2 Gerwen Drive',
+              'phone_number': '132-3212',
+              'email': 'michael@email.com',
+              'division_requested': 'D'
               },        
               {
-              'name': 'Contact 2',
-              'address': '23 Main St',
-              'phone_number': '934-4329'
+              'dart_player': 'Phil',
+              'address': '42 Taylor Road',
+              'phone_number': '934-4329',
+              'email': 'phil@email.com',
+              'division_requested': 'C'
               }, 
               {
-              'name': 'Contact 3',
-              'address': '4 Lower St',
-              'phone_number': '432-5832'
+              'dart_player': 'Hammond',
+              'address': '4 Barneveld Ave',
+              'phone_number': '432-5832',
+              'email': 'Hammond@email.com',
+              'division_requested': 'B'
               },
               {
-              'name': 'Contact 4',
-              'address': '49 Upper Street',
-              'phone_number': '934-4290'
+              'dart_player': 'Gary',
+              'address': '49 Anderson Road',
+              'phone_number': '934-4290',
+              'email': 'ganderson@email.com',
+              'division_requested': 'A'
               },
               {
-              'name': 'Contact 5',
-              'address': '4 High Street',
-              'phone_number': '933-3390'
+              'dart_player': 'Adrian',
+              'address': '69 Lewis Street',
+              'phone_number': '933-3390',
+              'email': 'adrian@email.com',
+              'division_requested': 'AA'
               }
           ] ; 
       }
@@ -41,20 +51,20 @@
           return this.contacts ;
       }
 
-      add(n,a,p) {
+      add(n,a,p,e,d) {
           let len = this.contacts.length ;
           let newLen = this.contacts.push({
-              name: n, address : a, phone_number: p }) ;
+            dart_player: n, address : a, phone_number: p, email: e, division_requested: d}) ;
           return newLen > len ;
       }
 
-      update(key,n,a,p) {
+      update(key,n,a,p,e,d) {
           let index = _.findIndex(this.contacts, 
               (contact) => contact.phone_number === key
           );      
           if (index !== -1) {
               this.contacts.splice(index, 1, 
-                  {name: n, address: a, phone_number: p});
+                  {dart_player: n, address: a, phone_number: p, email: e, division_requested: d});
               return true ;
           }
           return false ;
