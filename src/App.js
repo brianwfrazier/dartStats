@@ -3,7 +3,9 @@ import './App.css';
 import Header from './components/header' 
 import ContactForm from './components/contactForm' 
 import ContactList from './components/contactList' 
-import api from './dataStore/stubAPI'  
+//import api from './dataStore/stubAPI'  
+import * as api from './api';
+import _ from 'lodash';
 
 
 class App extends Component {
@@ -17,7 +19,7 @@ class App extends Component {
         this.setState({});                          
     };
 
-    render() {
+   render() {
         let contacts = api.getAll() ;    
         return (    
             <div className="jumbotron">
@@ -28,6 +30,7 @@ class App extends Component {
                 </div>                     
             );
     }
+
 }
 
 export default App;
